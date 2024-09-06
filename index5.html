@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- head 内容保持不变 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOOPY世界欢迎页</title>
+    <!-- 引入Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Great+Vibes&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 基本样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle, rgba(255, 182, 193, 0.8) 0%, rgba(255, 192, 203, 0.8) 100%);
+        }
+
+        /* 导航栏样式 */
+        .nav-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 12px 20px;
+            background: linear-gradient(145deg, #ff69b4, #ff1493);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-link:hover {
+            background: linear-gradient(145deg, #ff1493, #ff69b4);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-link i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10001;
+            background: linear-gradient(145deg, #ff69b4, #ff1493);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-toggle:hover {
+            background: linear-gradient(145deg, #ff1493, #ff69b4);
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 导航栏响应式 */
+        @media (max-width: 768px) {
+            .nav-list {
+                flex-direction: column;
+                background-color: rgba(255, 192, 203, 0.95);
+                padding: 20px;
+                border-radius: 15px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                display: none;
+                position: fixed;
+                top: 80px;
+                left: 20px;
+                width: 200px;
+            }
+
+            .nav-list.show {
+                display: flex;
+            }
+
+            .nav-item {
+                margin-bottom: 15px;
+            }
+
+            .nav-link {
+                justify-content: flex-start;
+                width: 100%;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            /* 粒子渐变动画 */
+            @keyframes gradientBG {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+
+            @keyframes gradientText {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+        }
+
+        /* 欢迎屏幕样式 */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #ffb6c1, #ff69b4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 1s ease-out;
+        }
+
+        .welcome-message {
+            font-size: 2.5em;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3),   /* 第一层阴影 */
+                 5px 5px 15px rgba(255, 105, 180, 0.5), /* 第二层彩色阴影 */
+                 -3px -3px 6px rgba(255,255,255,0.6); /* 第三层亮色阴影 */
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            font-family: 'Dancing Script', cursive;
+            background: linear-gradient(45deg, #ff69b4, #ff1493, #ffb6c1);
+           -webkit-background-clip: text;
+           -webkit-text-fill-color: transparent;
+            animation: gradientText 3s ease infinite;
+        }
+
+        /* 主内容样式 */
+        .main-content {
+            display: none;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, rgba(255, 182, 193, 0.8) 0%, rgba(255, 192, 203, 0.8) 100%);
+            position: relative;
+        }
+
+        .scene {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            perspective: 800px;
+        }
+
+        .character-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            background: url('p1.png') no-repeat center center;
+            background-size: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .character-content {
+            width: 130%;
+            height: 130%;
+            background: url('.png') no-repeat center center;
+            background-size: contain;
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .character-content::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.3) 0%,
+                rgba(255, 255, 255, 0.05) 40%,
+                rgba(255, 255, 255, 0) 50%
+            );
+            transform: rotate(-45deg);
+            animation: shine 3s infinite;
+        }
+        .character {
+            width: 300px;
+            height: 300px;
+            background: url('p1.png') no-repeat center center;
+            background-size: contain;
+            animation: float 3s ease-in-out infinite;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            z-index: 1000;
+        }
+
+        @keyframes shine {
+            0% { transform: translateY(-50%) translateX(-50%) rotate(-45deg); }
+            100% { transform: translateY(150%) translateX(150%) rotate(-45deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .shadow {
+            width: 90%;
+            height: 25px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 50%;
+            position: absolute;
+            bottom: -50px;
+            left: 5%;
+            animation: shadow 4s ease-in-out infinite;
+            filter: blur(15px);
+        }
+
+        @keyframes shadow {
+            0%, 100% { transform: scale(1) translateY(0); opacity: 0.4; }
+            50% { transform: scale(0.8) translateY(25px); opacity: 0.3; }
+        }
+
+        .tip {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #333;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            opacity: 1;
+            transition: opacity 0.3s;
+            z-index: 1500;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        /* 祝福信息样式 */
+        .blessing {
+            position: absolute;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) scale(1.1);
+            background: rgba(255, 192, 203, 0.9);
+            padding: 12px 18px;
+            border-radius: 15px;
+            border: 2px solid #ff1493;
+            font-size: 22px;
+            font-family: 'Great Vibes', cursive;
+            color: #ff1493;
+            text-shadow: 0 0 10px rgba(255, 20, 147, 0.9);
+            opacity: 0;
+            transition: all 0.5s ease-in-out;
+            z-index: 2000;
+            filter: drop-shadow(0 0 15px rgba(255, 20, 147, 0.8));
+            white-space: nowrap;
+            pointer-events: none;
+            letter-spacing: 2px;
+        }
+
+        .blessing.show {
+            opacity:1 ;
+            animation: floatUpEnhanced 6s ease-out forwards;
+        }
+
+        @keyframes floatUpEnhanced {
+            0% { 
+                transform: translateY(50px) translateX(-50%) scale(0.8);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(-30px) translateX(-50%) scale(1.2);
+            }
+            40%, 60% {
+                transform: translateY(-60px) translateX(-50%) scale(1.2);
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(-100px) translateX(-50%) scale(1.1);
+            }
+            100% { 
+                transform: translateY(-150px) translateX(-50%) scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        /* 粒子样式 */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 223, 186, 0.9) 0%, rgba(255, 223, 186, 0.1) 100%);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+            z-index: 2000;
+        }
+
+        /* 透明度渐变动画 */
+        @keyframes fade-out {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* 角色点击缩放和旋转 */
+        .character-container.clicked {
+            animation: scaleRotate 0.5s ease-in-out;
+        }
+
+        @keyframes scaleRotate {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(360deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        /* 背景闪烁效果 */
+        .main-content.flashing {
+            animation: flash 0.5s ease-in-out;
+        }
+
+        @keyframes flash {
+            0% { background-color: rgba(255, 182, 193, 0.8); }
+            50% { background-color: rgba(255, 105, 180, 0.8); }
+            100% { background-color: rgba(255, 182, 193, 0.8); }
+        }
+
+        /* 动画渐变 */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+character-content {
+    width: 200%; /* 调整角色图片大小 */
+    height:200%; /* 调整角色图片大小 */
+    background: url('p1.png') no-repeat center center; /* 替换成角色图片路径 */
+    background-size: contain;
+    position: absolute;
+    top: 20%; /* 根据需要调整位置 */
+    left: 20%;
+        }
+    </style>
+</head>
+<body>
+</head>
+<body>
+    <!-- 菜单切换按钮 -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- 导航列表 -->
+    <ul class="nav-list" id="navList">
+        <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-home"></i> 首页</a></li>
+        <li class="nav-item"><a href="index2.html" class="nav-link"><i class="fas fa-fire"></i> 惊喜</a></li>
+        <li class="nav-item"><a href="index3.html" class="nav-link"><i class="fas fa-heart"></i> Loopy故事</a></li>
+        <li class="nav-item"><a href="index4.html" class="nav-link"><i class="fas fa-images"></i> Loopy的相册墙</a></li>
+        <li class="nav-item"><a href="index5.html" class="nav-link"><i class="	fas fa-heart"></i> Loopy的粉色世界</a></li>
+    </ul>
+
+    <!-- 祝福信息 -->
+    <div class="blessing" id="blessingMessage"></div>
+
+    <!-- 欢迎屏幕 -->
+    <div class="welcome-screen">
+        <div class="character"></div>
+        <div class="welcome-message">欢迎来到LOOPY世界！</div>
+    </div>
+
+    <!-- 主内容 -->
+    <div class="main-content">
+        <div class="scene">
+            <div class="character-container">
+                <div class="character-content"></div>
+                <div class="shadow"></div>
+            </div>
+            <div class="tip">你按一下有惊喜噢！！！</div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const welcomeScreen = document.querySelector('.welcome-screen');
+            const character = document.querySelector('.character');
+            const welcomeMessage = document.querySelector('.welcome-message');
+            const mainContent = document.querySelector('.main-content');
+            const blessingMessage = document.getElementById('blessingMessage');
+            const tip = document.querySelector('.tip');
+            
+            const blessings = [
+                '爱笑的女孩运气都不会差！',
+                '祝你前程似锦，梦想成真！',
+                '愿你想做的的事都做得到！',
+                '祝你考试顺顺利利！',
+                '愿你快乐无忧，平安喜乐！',
+                '祝你天天开心，幸福相伴！',
+                '愿你前途光明，成功在握！',
+                '祝你身体健康，万事如意！',
+                '愿你春风得意，美梦成真！',
+                '祝你无拘无束想做什么就做什么！',
+                '愿你无忧无虑，烦恼让风带走！',
+                '祝你天天开心，做个快乐的女孩！',
+                '愿你所有朋友对你永不背叛！',
+                '祝你永远吃不胖（我依然不信）',
+            ];
+
+            function getRandomColor() {
+                const colors = ['#ff9999', '#ffcc99', '#99ccff', '#99ff99', '#cc99ff', '#ffff99', '#ff69b4', '#ff1493'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            function createParticles(count, x, y) {
+                for (let i = 0; i < count; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+
+                    particle.style.left = `${x}px`;
+                    particle.style.top = `${y}px`;
+
+                    const size = Math.random() * 8 + 4;
+                    const shape = Math.random() > 0.5 ? '50%' : `${Math.random() * 50}% ${Math.random() * 50}%`;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.borderRadius = shape;
+                    particle.style.backgroundColor = getRandomColor();
+                    particle.style.opacity = '1';
+                    
+                    document.body.appendChild(particle);
+
+                    const destinationX = (Math.random() - 0.5) * 300;
+                    const destinationY = (Math.random() - 0.5) * 300;
+                    const rotate = Math.random() * 360;
+                    const duration = Math.random() * 1000 + 2000;
+
+                    particle.animate([
+                        { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+                        { transform: `translate(${destinationX}px, ${destinationY}px) rotate(${rotate}deg)`, opacity: 0 }
+                    ], {
+                        duration: duration,
+                        easing: 'cubic-bezier(0.42, 0, 0.58, 1)',
+                        fill: 'forwards'
+                    });
+
+                    setTimeout(() => {
+                        particle.remove();
+                    }, duration);
+                }
+            }
+
+            function typeWriter(blessing) {
+                let index = 0;
+                blessingMessage.textContent = '';
+                function type() {
+                    if (index < blessing.length) {
+                        blessingMessage.textContent += blessing.charAt(index);
+                        index++;
+                        setTimeout(type, 100);
+                    }
+                }
+                type();
+            }
+
+            document.querySelector('.character-container').addEventListener('click', (e) => {
+                const randomIndex = Math.floor(Math.random() * blessings.length);
+                const blessing = blessings[randomIndex];
+                blessingMessage.textContent = '';
+                blessingMessage.classList.remove('show');
+                void blessingMessage.offsetWidth; // 触发重排
+                blessingMessage.classList.add('show');
+
+                const rect = e.target.getBoundingClientRect();
+                const x = e.clientX;
+                const y = e.clientY;
+
+                createParticles(50, x, y);
+                
+                mainContent.classList.add('flashing');
+                setTimeout(() => {
+                    mainContent.classList.remove('flashing');
+                }, 500);
+
+                tip.style.opacity = '0';
+
+                typeWriter(blessing);
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = (e.clientX / window.innerWidth - 0.5) * 20;
+                const mouseY = (e.clientY / window.innerHeight - 0.5) * 20;
+                document.querySelector('.character-container').style.transform = `rotateY(${mouseX}deg) rotateX(${-mouseY}deg)`;
+            });
+
+            setTimeout(() => {
+                character.style.opacity = '1';
+                character.style.transform = 'scale(1)';
+            }, 500);
+
+            setTimeout(() => {
+                welcomeMessage.style.opacity = '1';
+                welcomeMessage.style.transform = 'translateY(0)';
+            }, 1000);
+
+            setTimeout(() => {
+                welcomeScreen.style.opacity = '0';
+                mainContent.style.display = 'flex';
+                mainContent.style.opacity = '1';
+            }, 3000);
+
+            setTimeout(() => {
+                welcomeScreen.style.display = 'none';
+            }, 4000);
+
+            const menuToggle = document.getElementById('menuToggle');
+            const navList = document.getElementById('navList');
+
+            menuToggle.addEventListener('click', () => {
+                navList.classList.toggle('show');
+            });
+        });
+    </script>
+</body>
+</html>

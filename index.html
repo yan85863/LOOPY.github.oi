@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loopy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Basic styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #fff5f8;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ff6f61 0%, #ff9999 100%);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            margin: 0 15px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: #ffdfdf;
+            transition: width 0.3s ease;
+            transition-delay: 0.1s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+            background-color: #fff;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 20px;
+            padding: 5px 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            border-radius: 20px;
+            padding: 5px;
+            margin-right: 5px;
+        }
+
+        .search-bar button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #ff9999;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #ff6f61;
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ffc0cb 0%, #ff9aa2 100%);
+            height: calc(100vh - 60px);
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: url('path/to/your/image.jpg') repeat;
+            background-size: cover;
+            animation: moveBackground 30s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content h2 {
+            font-size: 24px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+        }
+
+        .menu-toggle .bar {
+            height: 3px;
+            width: 25px;
+            background-color: white;
+            margin: 4px 0;
+        }
+
+        .character-section {
+            padding: 60px 20px;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .character-section h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: #ff6f61;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .character-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .character-card {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 250px;
+        }
+
+        .character-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .character-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .character-info {
+            padding: 20px;
+        }
+
+        .character-info h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #ff6f61;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .character-info h3 i {
+            margin-right: 10px;
+        }
+
+        .character-info p {
+            font-size: 16px;
+            color: #777;
+        }
+
+        .character-intro {
+            padding: 60px 20px;
+            background-color: #fff5f8;
+            text-align: center;
+        }
+
+        .character-intro h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #ff6f61;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .character-intro img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .character-intro img:hover {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .character-intro p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .gallery-section {
+            padding: 60px 20px;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .gallery-section h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: #ff6f61;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .gallery-item {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 300px;
+            height: 200px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            background-color: #ff6f61;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .scroll-to-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .scroll-to-top:hover {
+            background-color: #ff9999;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-list {
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                background-color: #ff6f61;
+                flex-direction: column;
+                border-radius: 10px;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                display: none;
+                width: 250px;
+                gap: 10px;
+                z-index: 1000; /* Ensure the nav-list stays on top */
+            }
+
+            .nav-list.active {
+                display: flex;
+            }
+
+            .nav-item {
+                margin: 10px 0;
+            }
+
+            .search-bar {
+                display: none;
+            }
+
+            .hero-content {
+                padding: 20px;
+            }
+
+            .character-card {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .character-intro img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .gallery-item {
+                width: 100%;
+                max-width: 300px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><i class="fas fa-crown"></i> LOOPY</div>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-home"></i> 首页</a></li>
+                <li class="nav-item"><a href="index2.html" class="nav-link"><i class="fas fa-fire"></i> 惊喜</a></li>
+                <li class="nav-item"><a href="index3.html" class="nav-link"><i class="fas fa-heart"></i> Loopy故事</a></li>
+                <li class="nav-item"><a href="index4.html" class="nav-link"><i class="fas fa-images"></i> Loopy的相册墙</a></li>
+                <li class="nav-item"><a href="index5.html" class="nav-link"><i class="fas fa-heart"></i> Loopy的粉色世界</a></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" placeholder="搜索">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content" data-aos="fade-up">
+            <h1>欢迎来到Loopy的世界!</h1>
+            <h2>探索创意与乐趣的世界</h2>
+        </div>
+    </div>
+
+    <main>
+        <section class="character-section">
+            <h2>角色</h2>
+            <div class="character-grid">
+                <div class="character-card">
+                    <img src="头像1.jpg" alt="角色 1" class="character-image">
+                    <div class="character-info">
+                        <h3><i class="fas fa-user"></i> LOOPY(露比)</h3>
+                        <p>Loopy是一个可爱的小角色，总是带着微朋友和冒险。</p>
+                    </div>
+                </div>
+                <div class="character-card">
+                    <img src="头像2.png" alt="角色 2" class="character-image">
+                    <div class="character-info">
+                        <h3><i class="fas fa-user"></i>波露露(Pororo) </h3>
+                        <p>宝露露是Loopy的好朋友，擅长解决问题和提供帮助。</p>
+                    </div>
+                </div>
+                <div class="character-card">
+                    <img src="头像3.png" alt="角色 3 " class="character-image">
+                    <div class="character-info">
+                        <h3><i class="fas fa-user"></i> 波比(poby)</h3>
+                        <p>喜欢探险和发现新事物，常常带给大家惊喜。</p>
+                    </div>
+                </div>
+                <!-- Add more character cards as needed -->
+            </div>
+        </section>
+
+        <section class="character-intro">
+            <h2>LOOPY(露比)</h2>
+            <img src="头像.jpg" alt="角色">
+            <p>Loopy是一个可爱的小角色，总是带着微笑，喜欢交朋友和冒险。他有一个温暖的心，总是愿意帮助他人，并且拥有无尽的好奇心。Loopy的梦想是环游世界，认识更多的朋友，体验更多的冒险。</p>
+        </section>
+
+        <section class="gallery-section">
+            <h2>LOOPY的相册</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="3.jpeg" alt="画廊图片 1">
+                </div>
+                <div class="gallery-item">
+                    <img src="4.png" alt="画廊图片 2">
+                </div>
+                <div class="gallery-item">
+                    <img src="5.jpg" alt="Gallery Image 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="6.jpg" alt="Gallery Image 4">
+                </div>
+                <div class="gallery-item">
+                    <img src="7.jpg" alt="Gallery Image 5">
+                </div>
+                <div class="gallery-item">
+                    <img src="8.png" alt="Gallery Image 6">
+                </div>
+                <div class="gallery-item">
+                    <img src="9.jpg" alt="Gallery Image 7">
+                </div>
+                <div class="gallery-item">
+                    <img src="10.jpg" alt="Gallery Image 8">
+                </div>
+                <div class="gallery-item">
+                    <img src="11.jpg" alt="Gallery Image 9">
+                </div>
+                <div class="gallery-item">
+                    <img src="12.jpg" alt="Gallery Image 10">
+                </div>
+                <div class="gallery-item">
+                    <img src="13.jpg" alt="Gallery Image 11">
+                </div>
+                <!-- Add more gallery items as needed -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Loopy. 保留所有权利。</p>
+        <p>关注我们 <a href="#"><i class="fab fa-twitter"></i> Twitter</a> | <a href="#"><i class="fab fa-instagram"></i> Instagram</a> | <a href="#"><i class="fab fa-facebook"></i> Facebook</a></p>
+    </footer>
+
+    <button class="scroll-to-top" id="scroll-to-top"><i class="fas fa-arrow-up"></i></button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navList = document.querySelector('.nav-list');
+        const scrollToTopButton = document.getElementById('scroll-to-top');
+
+        mobileMenu.addEventListener('click', () => {
+            navList.classList.toggle('active');
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollToTopButton.style.display = 'block';
+            } else {
+                scrollToTopButton.style.display = 'none';
+            }
+        });
+
+        scrollToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
